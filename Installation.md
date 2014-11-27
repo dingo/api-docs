@@ -1,12 +1,3 @@
-The package can be installed with Composer, either by modifying your `composer.json` directly or using the `composer require` command.
-
-```
-composer require dingo/api:0.*
-```
-
-> This package is still under development and has not been tagged as stable.
-
-Once the package is installed you'll need to add it to your providers in `app/config/app.php`:
 To install this package you will need:
 
 - Laravel 4.1+
