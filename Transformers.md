@@ -98,4 +98,4 @@ The `$binding` parameter may be useful should your transformation layer include 
 
 The `$request` parameter is the current HTTP request being executed and is useful when your transformation layer requires query string values or other related data.
 
-[← Responses](https://github.com/dingo/api/wiki/Responses) | [Returning Errors →](https://github.com/dingo/api/wiki/Returning-Errors)
+[← Errors And Error Responses](https://github.com/dingo/api/wiki/Errors-And-Error-Responses) | [Authentication →](https://github.com/dingo/api/wiki/Authentication)
