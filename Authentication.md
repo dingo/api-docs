@@ -138,7 +138,7 @@ Route::api(['version' => 'v1', 'protected' => true], function () {
 Route::api('v1', function () {
     Route::get('user', ['protected' => true, function () {
         // This route requires authentication.
-    });
+    }]);
 
     Route::get('posts', function () {
         // This route does not require authentication.
