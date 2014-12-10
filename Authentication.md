@@ -53,6 +53,8 @@ Once you have the package you can configure the provider.
     $provider->setClientResolver(function ($id) {
         // Logic to return a client by their ID.
     });
+    
+    return $provider;
 }
 ```
 
