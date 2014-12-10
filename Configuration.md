@@ -18,6 +18,8 @@ By default `conditional_request` is enabled as it will utilize the clients cachi
 
 Strict mode will require clients to send the `Accept` header instead of defaulting to the version specified in the configuration file. This means you will not be able to browse the API through your web browser.
 
+If strict mode is enabled and an invalid `Accept` header is used the API will throw an unhandled `Dingo\Api\Exception\InvalidAcceptHeaderException` that should be you should handle appropriately. You can catch this exception by utilizing Laravel's exception handling component.
+
 #### Authentication Providers
 
 By default only `basic` authentication is enabled. Authentication is covered in more detail in a later chapter.
