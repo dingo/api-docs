@@ -44,6 +44,20 @@ class BaseController extends Controller
 
 Now your controllers can simply extend this base controller. The response builder is available via the `$response` property on your controller. Note that all the methods below can also be used as `withX`.
 
+#### Responding With An Array
+
+```php
+class UserController extends BaseController
+{
+	public function show($id)
+	{
+		$user = User::findOrFail($id);
+
+		return $this->response->array($user->toArray());
+	}
+}
+```
+
 #### Responding With A Single Item
 
 ```php
