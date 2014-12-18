@@ -50,6 +50,17 @@ Fractal is registered as the default transformation layer and with the default o
 'transformer' => new Dingo\Api\Transformer\FractalTransformer(new League\Fractal\Manager, 'include', ',')
 ```
 
+If you need to further configure Fractal you can use a closure and simply return the `FractalTransformer` instance.
+
+```php
+'transformer' => function () {
+    $fractal = new League\Fractal\Manager;
+
+    $fractal->setSerializer(new CustomSerializer);
+
+    return new Dingo\Api\Transformer\FractalTransformer($fractal, 'include', ',');
+```
+
 #### Advanced Usage With Response Builder
 
 Using Fractal in conjunction with the response builder is typically the best way to return your data from controllers.
