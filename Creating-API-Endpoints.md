@@ -54,4 +54,14 @@ Route::api('v2', function () {
 });
 ```
 
+#### Viewing Routes In The Console
+
+You can view your API routes in the console by using the `api:routes` command.
+
+```
+$ php artisan api:routes
+```
+
+This command behaves the same as the `routes` command that Laravel ships with.
+
 [← Configuration](https://github.com/dingo/api/wiki/Configuration) | [Responses →](https://github.com/dingo/api/wiki/Responses)
