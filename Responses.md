@@ -147,7 +147,7 @@ return $this->response->errorUnauthorized();
 Once you've used one of the above methods you can further customize the response by adding additional headers.
 
 ```php
-return $this->response->item($user, new UserTransformer)->addHeader('X-Foo', 'Bar');
+return $this->response->item($user, new UserTransformer)->withHeader('X-Foo', 'Bar');
 ```
 
 #### Adding Meta Data
