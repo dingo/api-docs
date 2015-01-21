@@ -9,23 +9,12 @@ The word "transformer" is used quite a bit in this section. It's worth noting wh
 
 ### Using Transformers
 
-There are three ways to make use of transformers.
+There are a couple ways to make use of transformers.
 
 #### Bind A Class To A Transformer
 
 ```php
 API::transform('User', 'UserTransformer');
-```
-#### Implement An Interface On The Class
-
-```php
-class User extends Eloquent implements Dingo\Api\Transformer\TransformableInterface
-{
-    public function getTransformer()
-    {
-        return new UserTransformer;
-    }
-}
 ```
 
 #### Use The Response Builder
