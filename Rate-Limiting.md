@@ -2,6 +2,19 @@ Rate Limiting allows you to limit the number of requests a client can make in a 
 
 To disable rate limiting simply remove all the throttles from the configuration file.
 
+### Changing Rate Limiting Key
+
+By default rate limiting is applied to a clients IP address. To change this default behaviour you can register your own resolver which should return a string
+to be used by the rate limiter.
+
+```php
+App::make('api.limiter')->setRateLimiter(function ($container, $request) {
+    return $container['example']->getRateLimiterKey(); 
+});
+```
+
+The first parameter will be the IoC container and the second is the request instance that is being rate limited.
+
 ### Route Specific Throttling
 
 If you want to only rate limit certain routes or groups of routes you can use the `limit` and `expires` options in your routes.
