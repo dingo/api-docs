@@ -1,67 +1,79 @@
-To create an endpoint you must first declare an API route group, which looks something like this.
+An endpoint is simply another term for a route. When talking about APIs many people refer to the routes you visit as an endpoint.
+
+#### Version Groups
+
+To avoid complications with your main application routes this package utilizes its own router. As such we must first get an instance of the API router to create our endpoints.
 
 ```php
-Route::api('v1', function () {
+$api = $app['Dingo\Api\Routing\Router'];
+```
+
+We must now define a version group. This allows us to create the same endpoint for multiple versions should we need to change things down the track.
+
+```php
+$api->version('v1', function ($api) {
 
 });
 ```
 
-This group informs the router that any routes registered within this group should be treated as API endpoints. It works just the same as a regular route group as well. Instead of a plain string as the first parameter you can pass in an array of options.
+If you would like a group to respond to multiple versions you can simply pass an array of versions.
 
 ```php
-Route::api(['version' => 'v1', 'before' => 'api.logs'], function () {
+$api->version(['v1', 'v2'], function ($api) {
 
 });
 ```
 
-The `api.logs` before filter might be some user defined filter that logs all the API requests. You will notice though that the version is specified, as it is a required option. You can also set a prefix or the domain of a specific API route group in the array of options.
-
-You can also nest regular route groups as well to handle things like namespacing or prefixes.
+You can also treat this group as a standard group for your particular framework by passing an array of attributes as the second parameter.
 
 ```php
-Route::api('v1', function () {
-    Route::group(['prefix' => 'users'], function () {
-        // These routes will be prefixed with 'users'.
+$api->version('v1', ['middleware' => 'foo'], function ($api) {
+
+});
+```
+
+You can also nest regular groups for further customization of some endpoints.
+
+```php
+$api->version('v1', function ($api) {
+    $api->group(['middleware' => 'foo'], function ($api) {
+        // Endpoints registered here will have the "foo" middleware applied.
     });
 });
 ```
 
-An API route group may also indicate multiple API versions. This is useful when you have endpoints that did not change between your API versions.
+#### Creating Endpoints
+
+Once you have a version group you can start to create your endpoints using the `$api` parameter of the group closure.
 
 ```php
-Route::api(['version' => ['v1', 'v2']], function () {
-
+$api->version('v1', function ($api) {
+    $api->get('users/{id}', 'Api\UserController@show');
 });
 ```
 
-Inside your API route group you can now create your endpoints. To do so you just use the standard Laravel rouring methods, like `Route::get`, `Route::post`, `Route::resource`, etc.
+Because endpoints are grouped per version you can use the exact same URI to create a different response for the same endpoint.
 
 ```php
-Route::api('v1', function () {
-    Route::get('users/{id}', 'Api\UserController@show');
+$api->version('v1', function ($api) {
+    $api->get('users/{id}', 'Api\V1\UserController@show');
+});
+
+$api->version('v2', function ($api) {
+    $api->get('users/{id}', 'Api\V2\UserController@show');
 });
 ```
 
-Because routes are grouped per version you can route to the exact same endpoint for a different version of the API.
-
-```php
-Route::api('v1', function () {
-    Route::get('users/{id}', 'Api\V1\UserController@show');
-});
-
-Route::api('v2', function () {
-    Route::get('users/{id}', 'Api\V2\UserController@show');
-});
-```
+You can also register resources and controllers using the respective methods.
 
 #### Viewing Routes In The Console
 
-You can view your API routes in the console by using the `api:routes` command.
+If you're using Laravel 5.1 you can see the registered routes using Artisan.
 
 ```
 $ php artisan api:routes
 ```
 
-This command behaves the same as the `routes` command that Laravel ships with.
+This command behaves the same as the `route:list` command that Laravel ships with.
 
 [← Configuration](https://github.com/dingo/api/wiki/Configuration) | [Responses →](https://github.com/dingo/api/wiki/Responses)

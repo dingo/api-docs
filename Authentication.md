@@ -6,9 +6,9 @@ This package allows you to configure multiple authentication providers. When aut
 
 By default only HTTP Basic authentication is enabled in the configuration file. Here is a list of the current supported authentication providers that are built in to the package.
 
-- HTTP Basic (`Dingo\Api\Auth\BasicProvider`)
-- JSON Web Tokens (`Dingo\Api\Auth\JWTProvider`)
-- OAuth 2.0 (`Dingo\Api\Auth\LeagueOAuth2Provider`)
+- HTTP Basic (`Dingo\Api\Auth\Provider\Basic`)
+- JSON Web Tokens (`Dingo\Api\Auth\Provider\JWT`)
+- OAuth 2.0 (`Dingo\Api\Auth\Provider\OAuth2`)
 
 #### HTTP Basic
 
@@ -16,7 +16,7 @@ This provider is configured by default, however, if you need to configure the id
 
 ```php
 'basic' => function ($app) {
-   return new Dingo\Api\Auth\BasicProvider($app['auth'], 'email');
+   return new Dingo\Api\Auth\Provider\Basic($app['auth'], 'email');
 }
 ```
 
@@ -28,7 +28,7 @@ Once you have the package you can configure the provider.
 
 ```php
 'jwt' => function ($app) {
-    return new Dingo\Api\Auth\JWTProvider($app['tymon.jwt.auth']);
+    return new Dingo\Api\Auth\Provider\JWT($app['Tymon\JWTAuth\JWTAuth']);
 }
 ```
 
@@ -36,15 +36,13 @@ Once you have the package you can configure the provider.
 
 This package makes use of a 3rd party package to integrate OAuth 2.0. You can either install [`league/oauth2-server`](https://github.com/thephpleague/oauth2-server) and configure the server yourself or use the bridge package, [`lucadegasperi/oauth2-server-laravel`](https://github.com/lucadegasperi/oauth2-server-laravel).
 
-> If using`lucadegasperi/oauth2-server-laravel` you are required to install `v3.0.*`
-
 > For simplicity this guide will assume you are using the bridge package.
 
 Once you have the package you can configure the provider.
 
 ```php
 'oauth' => function ($app) {
-    $provider = new Dingo\Api\Auth\LeagueOAuth2Provider($app['oauth2-server.authorizer']->getChecker());
+    $provider = new Dingo\Api\Auth\Provider\OAuth2($app['oauth2-server.authorizer']->getChecker());
 
     $provider->setUserResolver(function ($id) {
         // Logic to return a user by their ID.
@@ -53,7 +51,7 @@ Once you have the package you can configure the provider.
     $provider->setClientResolver(function ($id) {
         // Logic to return a client by their ID.
     });
-    
+
     return $provider;
 }
 ```
@@ -68,15 +66,15 @@ The resolvers both receive the ID of the user or client and should use this ID t
 
 If you're developing for a legacy system or require some other form of authentication you may implement your own provider.
 
-Your authentication provider should implement `Dingo\Api\Auth\ProviderInterface`. If authentication succeeds your provider should return an instance of the authenticated user. If authentication fails your provider should thrown a `Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException`.
+Your authentication provider should implement `Dingo\Api\Contract\Auth\Provider`. If authentication succeeds your provider should return an instance of the authenticated user. If authentication fails your provider should thrown a `Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException`.
 
 ```php
 use Illuminate\Http\Request;
 use Dingo\Api\Routing\Route;
-use Dingo\Api\Auth\ProviderInterface;
+use Dingo\Api\Contract\Auth\Provider;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
-class CustomProvider implements ProviderInterface
+class CustomProvider implements Provider
 {
     public function authenticate(Request $request, Route $route)
     {
@@ -87,17 +85,17 @@ class CustomProvider implements ProviderInterface
 }
 ```
 
-The abstract `Dingo\Api\Auth\AuthorizationProvider` can be extended should your provider utilize tokens sent via the `Authorization` header. The `AuthorizationProvider::validateAuthorizationHeader` method allows you to easily validate that the authorization header exists and contains a valid value.
+The abstract `Dingo\Api\Auth\Provider\Authorization` can be extended should your provider utilize tokens sent via the `Authorization` header. The `Dingo\Api\Auth\Provider\Authorization::validateAuthorizationHeader` method allows you to easily validate that the authorization header exists and contains a valid value.
 
 ```php
 
 use Illuminate\Http\Request;
 use Dingo\Api\Routing\Route;
-use Dingo\Api\Auth\AuthorizationProvider;
+use Dingo\Api\Auth\Provider\Authorzation;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
-class CustomProvider extends AuthorizationProvider
+class CustomProvider extends Authorization
 {
     public function authenticate(Request $request, Route $route)
     {
@@ -122,27 +120,34 @@ Once you've implemented your authentication provider you can configure it.
 }
 ```
 
+Or from your bootstrap file.
+
+```php
+$app['Dingo\Api\Auth\Auth']->extend('custom', function ($app) {
+    return new CustomProvider;
+});
+
 ### Protecting Endpoints
 
-You can enable or disable protection at the route or group level by setting the `protected` flag to either `true` or `false` in the options.
+You can enable or disable protection at the route or group level by setting the `protected` flag to either `true` or `false` in the attributes.
 
 #### Require Authentication On All Routes
 
 ```php
-Route::api(['version' => 'v1', 'protected' => true], function () {
-    // Routes within this group will require authentication.
+$api->version('v1', ['protected' => true], function ($api) {
+    // Routes within this version group will require authentication.
 });
 ```
 
 #### Require Authentication On Specific Routes
 
 ```php
-Route::api('v1', function () {
-    Route::get('user', ['protected' => true, function () {
+$api->version('v1', function ($api) {
+    $api->get('user', ['protected' => true, function () {
         // This route requires authentication.
     }]);
 
-    Route::get('posts', function () {
+    $api->get('posts', function () {
         // This route does not require authentication.
     });
 });
@@ -151,14 +156,14 @@ Route::api('v1', function () {
 #### Do Not Require Authentication On Specific Routes
 
 ```php
-Route::api(['version' => 'v1', 'protected' => true], function () {
-    Route::get('user', function () {
+$api->version('v1', ['protected' => true], function ($api) {
+    $api->get('user', function () {
         // This route requires authentication.
     });
 
-    Route::get('posts', ['protected' => false, function () {
+    $api->get('posts', ['protected' => false, function () {
         // This route does not require authentication.
-    });
+    }]);
 });
 ```
 
@@ -167,35 +172,38 @@ Route::api(['version' => 'v1', 'protected' => true], function () {
 If you want to set a specific authentication provider on a group of routes or specific route you can do so in the options.
 
 ```php
-Route::api('v1', function () {
-    Route::get('user', ['protected' => true, 'providers' => 'basic|oauth', function () {
+$api->version('v1', function ($api) {
+    $api->get('user', ['protected' => true, 'providers' => ['basic', 'oauth'], function () {
         // This route requires authentication.
     }]);
 });
 ```
 
-Or you can pass an array of providers instead of a string.
-
 #### Require Authentication On Controller Methods
 
-If your controllers use `Dingo\Api\Routing\ControllerTrait` then you can use the `protect` and `unprotect` methods in your controllers constructor.
+If your controllers use the `Dingo\Api\Routing\Helpers` trait then you can use the `protect` and `unprotect` methods in your controllers constructor.
 
 ```php
-use Dingo\Api\Routing\ControllerTrait;
+use Dingo\Api\Routing\Helpers;
 
 class UserController extends Controller
 {
-    use ControllerTrait;
+    use Helpers;
 
     public function __construct()
     {
         $this->protect('index');
 
-        // You can also pass an array or a pipe separated string.
+        // You can also pass an array of methods.
         $this->protect(['index', 'posts']);
-        $this->protect('index|posts');
 
-        // Do not pass in any method name to protect all methods.
+        // This is the same as only protected the methods provided.
+        $this->protect(['only' => ['index']]);
+
+        // Protect all methods except those provided.
+        $this->protect(['except' => ['posts']]);
+
+        // Do not pass in any method names to protect all methods.
         $this->protect();
 
         // The same rules apply to the "unprotect" method.
@@ -218,23 +226,23 @@ class UserController extends Controller
 Within a protected endpoint you can retrieve the authenticated users instance.
 
 ```php
-Route::api(['version' => 'v1', 'protected' => true], function () {
-    Route::get('user', function () {
-        $user = API::user();
+$api->version('v1', ['protected' => true], function ($api) {
+    $api->get('user', function () {
+        $user = app('Dingo\Api\Auth\Auth')->user();
 
         return $user;
     });
 });
 ```
 
-If your controllers uses `Dingo\Api\Routing\ControllerTrait` then you can use the `$auth` property.
+If your controllers use the `Dingo\Api\Routing\Helpers` trait then you can use the `$auth` property.
 
 ```php
-use Dingo\Api\Routing\ControllerTrait;
+use Dingo\Api\Routing\Helpers;
 
 class UserController extends Controller
 {
-    use ControllerTrait;
+    use Helpers;
 
     public function index()
     {
@@ -250,14 +258,14 @@ class UserController extends Controller
 Sometimes you may need to adjust a response based on whether or not the request was authenticated. To do this the route should not be protected. You then simply ask for the authenticated user.
 
 ```php
-Route::api(['version' => 'v1'], function () {
-    Route::get('user/{id}', function ($id) {
+$api->version('v1', function ($api) {
+    $api->get('users/{id}', function ($id) {
         $user = User::findOrFail($id);
 
         // Attempt to authenticate the request. If the request is not authenticated
         // then we'll hide the e-mail from the response. Only authenticated
         // requests can see other users e-mails.
-        if (! API::user()) {
+        if (! app('Dingo\Api\Auth\Auth')->user()) {
             $hidden = $user->getHidden();
 
             $user->setHidden(array_merge($hidden, ['email']));

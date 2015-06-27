@@ -2,12 +2,12 @@ See the [Authentication](https://github.com/dingo/api/wiki/Authentication) chapt
 
 ### Defining Route Scopes
 
-By using scopes you'll have more control over who can access your protected endpoints. You can define an array of pipe separated string of scopes on a specific route or route group.
+By using scopes you'll have more control over who can access your protected endpoints. Scopes can be set on a group or a route as either an array of pipe delimited string.
 
 #### Route Group Scopes
 
 ```php
-Route::api(['version' => 'v1', 'protected' => true, 'scopes' => 'read_user_data'], function () {
+$api->version('v1', ['protected' => true, 'scopes' => ['read_user_data', 'write_user_data']], function ($api) {
     // Only access tokens with the "read_user_data" scope will be given access.
 });
 ```
@@ -15,8 +15,8 @@ Route::api(['version' => 'v1', 'protected' => true, 'scopes' => 'read_user_data'
 #### Specific Route Scopes
 
 ```php
-Route::api(['version' => 'v1', 'protected' => true], function () {
-    Route::get('user', ['scopes' => 'read_user_data', function () {
+$api->version('v1', ['protected' => true], function ($api) {
+    $api->get('user', ['scopes' => 'read_user_data', function () {
         // Only access tokens with the "read_user_data" scope will be given access.
     }]);
 });
@@ -24,14 +24,14 @@ Route::api(['version' => 'v1', 'protected' => true], function () {
 
 #### Controller Scopes
 
-If your controllers use `Dingo\Api\Routing\ControllerTrait` you can use the `scopes` method.
+If your controllers use the `Dingo\Api\Routing\Helpers` trait you can use the `scopes` method.
 
 ```php
-use Dingo\Api\Routing\ControllerTrait;
+use Dingo\Api\Routing\Helpers;
 
-class HomeController extends Controller
+class UserController extends Controller
 {
-    use ControllerTrait;
+    use Helpers;
 
     public function __construct()
     {
@@ -40,21 +40,33 @@ class HomeController extends Controller
 }
 ```
 
-You can define the methods you want the scopes to apply to via the second parameter, either as a pipe separated string or as an array. If you do not supply the methods then the scopes will apply to all methods.
+You can define the methods you want the scopes to apply to via the second parameter, either as a pipe separated string or as an array. If you do not supply the methods then the scopes will apply to all methods. You can also use the `except` and `only` array keys to apply the scopes to a subset of methods.
 
 ```php
-use Dingo\Api\Routing\ControllerTrait;
+use Dingo\Api\Routing\Helpers;
 
-class HomeController extends Controller
+class UserController extends Controller
 {
-    use ControllerTrait;
+    use Helpers;
 
     public function __construct()
     {
+        // Only apply to the index method.
         $this->scopes('read_user_data', 'index');
+
+        // Apply to every method except the store method.
+        $this->scopes('read_user_data', ['except' => 'store']);
+
+        // Apply only to the store method.
+        $this->scopes('write_user_data', ['only' => ['store']]);
     }
 
     public function index()
+    {
+        //
+    }
+
+    public function store()
     {
         //
     }

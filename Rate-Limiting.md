@@ -1,15 +1,13 @@
 Rate Limiting allows you to limit the number of requests a client can make in a given amount of time. A limit and the expiration time is defined by a throttle. By default the package has two throttles, an authenticated throttle and an unauthenticated throttle.
 
-To disable rate limiting simply remove all the throttles from the configuration file.
-
 ### Changing Rate Limiting Key
 
 By default rate limiting is applied to a clients IP address. To change this default behaviour you can register your own resolver which should return a string
 to be used by the rate limiter.
 
 ```php
-App::make('api.limiter')->setRateLimiter(function ($container, $request) {
-    return $container['example']->getRateLimiterKey(); 
+app('api.limiter')->setRateLimiter(function ($container, $request) {
+    return $container['example']->getRateLimiterKey();
 });
 ```
 
@@ -20,8 +18,8 @@ The first parameter will be the IoC container and the second is the request inst
 If you want to only rate limit certain routes or groups of routes you can use the `limit` and `expires` options in your routes.
 
 ```php
-Route::api('v1', function () {
-    Route::get('users', ['limit' => 100, 'expires' => 5, function () {
+$api->version('v1', function ($api) {
+    $api->get('users', ['limit' => 100, 'expires' => 5, function () {
         return User::all();
     }]);
 });
@@ -30,12 +28,12 @@ Route::api('v1', function () {
 This would set a request limit of 100 with an expiration time of 5 minutes for this specific route. If you were to set it on the group then each route within the group would have a limit of 100.
 
 ```php
-Route::api(['version' => 'v1', 'limit' => 100, 'expires' => 5], function () {
-    Route::get('users', function () {
+$api->version('v1', ['limit' => 100, 'expires' => 5], function ($api) {
+    $api->get('users', function () {
         return User::all();
     });
 
-    Route::get('posts', function () {
+    $api->get('posts', function () {
         return Post::all();
     });
 });
@@ -45,7 +43,9 @@ A user could visit both the `/users` route and the `/posts` route 100 times each
 
 ### Custom Throttles
 
-You may need a custom throttle for more complex scenarios where you need to meet a couple of conditions in order for the throttle to be applied. A throttle must implement the `Dingo\Api\Http\RateLimit\ThrottleInterface`, however, an abstract class does exists to quickly get started. Each of the predefined throttles extends this abstract class.
+You may need a custom throttle for more complex scenarios where you need to meet a couple of conditions in order for the throttle to be applied. A throttle must implement the `Dingo\Api\Contract\Http\RateLimit\Throttle`, however, an abstract class does exists to quickly get started. Each of the predefined throttles extends this abstract class.
+
+All a throttle does is attempt to match a given condition. The throttle should return `true` or `false` depending on whether or not it matches the condition. As an example you might want to match that an authenticated user belongs to a given group.
 
 ```php
 use Illuminate\Container\Container;
@@ -68,5 +68,10 @@ You can then configure your throttle.
     'custom' => new CustomThrottle(['limit' => 200, 'expires' => 10])
 ]
 ```
+
+Or register it in your bootstrap file.
+
+```php
+app('api.limiting')->extend(new CustomThrottle(['limit' => 200, 'expires' => 10]));
 
 [← Authentication](https://github.com/dingo/api/wiki/Authentication) | [Internal Requests →](https://github.com/dingo/api/wiki/Internal-Requests)

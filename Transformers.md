@@ -2,19 +2,19 @@ Transformers allow you to easily and consistently transform objects into an arra
 
 ### Terminology
 
-The word "transformer" is used quite a bit in this section. It's worth noting what the following terms mean when used throughout this section.
+The word "transformer" is used quite a bit in this chapter. It's worth noting what the following terms mean when used throughout this chapter.
 
-- The **transformation layer** is usually a library that prepares and handles transformers.
+- The **transformation layer** is a library that prepares and handles transformers.
 - A **transformer** is a class that will takes raw data and returns it as a presentable array ready for formatting. The way a transformer is handled is dependant upon the transformation layer.
 
 ### Using Transformers
 
 There are a couple ways to make use of transformers.
 
-#### Bind A Class To A Transformer
+#### Register A Transformer For A Class
 
 ```php
-API::transform('User', 'UserTransformer');
+$app['Dingo\Api\Transformer\Factory']->register('User', 'UserTransformer');
 ```
 
 #### Use The Response Builder
@@ -33,21 +33,20 @@ When using Fractal's includes feature to embed relationships you should ensure y
 
 #### Advanced Configuration
 
-Fractal is registered as the default transformation layer and with the default options. To configure the include key and separator used when defining relationships to embed you must manually instantiate the `FractalTransformer` instance in your configuration file.
+Fractal is registered as the default transformation layer and with the default options. To configure the include key and separator used when defining relationships to embed you must manually instantiate the `Dingo\Api\Transformer\Adapter\Fractal` instance in your configuration file.
 
 ```php
-'transformer' => new Dingo\Api\Transformer\FractalTransformer(new League\Fractal\Manager, 'include', ',')
+'transformer' => function ($app) {
+    return new Dingo\Api\Transformer\Adapter\Fractal(new League\Fractal\Manager, 'include', ',');
+}
 ```
 
-If you need to further configure Fractal you can use a closure and simply return the `FractalTransformer` instance.
+If you're using Lumen you can do this in your bootstrap file.
 
 ```php
-'transformer' => function () {
-    $fractal = new League\Fractal\Manager;
-
-    $fractal->setSerializer(new CustomSerializer);
-
-    return new Dingo\Api\Transformer\FractalTransformer($fractal, 'include', ',');
+$app['Dingo\Api\Transformer\Factory']->setTransformer(function ($app) {
+    return new Dingo\Api\Transformer\Adapter\Fractal(new League\Fractal\Manager, 'include', ',');
+});
 ```
 
 #### Advanced Usage With Response Builder
@@ -64,26 +63,34 @@ return $this->item($user, new UserTransformer, ['key' => 'user']);
 
 ##### Utilizing The Callback
 
-The Fractal transformation layer allows you to register a callback that is fired after the creation of the resource. This callback receives either an instance of `League\Fractal\Resource\Item` or `League\Fractal\Resource\Collection`as its only parameter. You can then use this to interact with the resource at a much more complex level.
+The Fractal transformation layer allows you to register a callback that is fired after the creation of the resource. This callback receives either an instance of `League\Fractal\Resource\Item` or `League\Fractal\Resource\Collection`as its first parameter and an instance of `League\Fractal\Manager` as the second. You can then use this to interact with the resource at a much more complex level.
 
-The most obvious use case is to set the cursor implementation when wanting to paginate data.
+The most obvious use case is to set the cursor implementation when wanting to paginate data or to change the serializer on a per response basis.
 
 ```php
-return $this->collection($users, new UserTransformer, [], function ($resource) {
+return $this->collection($users, new UserTransformer, [], function ($resource, $fractal) {
     $resource->setCursor($cursor);
+});
+```
+
+If you're not using the parameters to pass a resource key you can omit the empty array and simply pass the callback as the third parameter.
+
+```php
+return $this->collection($users, new UserTransformer, function ($resource, $fractal) {
+    $fractal->setSerializer(new CustomSerializer);
 });
 ```
 
 ### Custom Transformation Layer
 
-Should you need a more custom approach to how your data is transformed then you can easily implement your transformation layer with this package. You'll need to create a  class that implements `Dingo\Api\Transformer\TransformerInterface` and has the required `transform` method.
+Should you need a more custom approach to how your data is transformed then you can easily implement your transformation layer with this package. You'll need to create a class that implements `Dingo\Api\Contract\Transformer\Adapter` and has the required `transform` method.
 
 ```php
 use Illuminate\Http\Request;
 use Dingo\Api\Transformer\Binding;
-use Dingo\Api\Transformer\TransformerInterface;
+use Dingo\Api\Contract\Transformer\Adapter;
 
-class MyCustomTransformer implements TransformerInterface
+class MyCustomTransformer implements Adapter
 {
     public function transform($response, $transformer, Binding $binding, Request $request)
     {
@@ -92,7 +99,7 @@ class MyCustomTransformer implements TransformerInterface
 }
 ```
 
-This `transform` method is the only required method, you're free to add as many other methods as you like. The purpose of the `transform` method is to take the `$response`, and hand it off to your transformation layer along with the `$transformer`. Your transformation layer should then return an array which is then returned by the `transform` method.
+This `transform` method is the only required method, you're free to add as many other methods as you like. The purpose of the `transform` method is to take the `$response`, and hand it off to your transformation layer along with the `$transformer`. Your transformation layer should then return an array which is then returned by the `transform` method. Of course, if your layer is very simple you can do it all inside of this class.
 
 The `$binding` parameter may be useful should your transformation layer include more advanced features such as the ability to add meta data or allow other developers to interact with your layer via the callback.
 

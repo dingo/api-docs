@@ -23,11 +23,11 @@ Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException
 As an example you might throw a `ConflictHttpException` when you attempt to update a record that has been updated by another user prior to this update request.
 
 ```php
-Route::api(['version' => 'v1', 'prefix' => 'api'], function () {
-    Route::put('user/{id}', function ($id) {
+$api->version('v1', function ($api) {
+    $api->put('user/{id}', function ($id) {
         $user = User::find($id);
 
-        if ($user->updated_at > Input::get('last_updated')) {
+        if ($user->updated_at > app('request')->get('last_updated')) {
             throw new Symfony\Component\HttpKernel\Exception\ConflictHttpException('User was updated prior to your request.');
         }
 
@@ -36,7 +36,7 @@ Route::api(['version' => 'v1', 'prefix' => 'api'], function () {
 });
 ```
 
-The package automatically catches the thrown exception and will convert it into its JSON representation. The responses HTTP status code is also changed to match that of the exception. A `ConflictHttpException` would result in an HTTP 409 status code and the following JSON representation.
+The package automatically catches the thrown exception and will convert it into its JSON representation. The responses HTTP status code is also changed to match that of the exception. A `ConflictHttpException` would result in an HTTP 409 status code and the following JSON representation assuming you haven't changed the default error format.
 
 ```json
 {
@@ -61,16 +61,16 @@ These exceptions are special in that they allow you to pass along any validation
 As an example you might throw a `StoreResourceFailedException` when you encounter errors when trying to validate the creation of a new user.
 
 ```php
-Route::api(['version' => 'v1', 'prefix' => 'api'], function () {
-    Route::post('users', function () {
+$api->version('v1', function ($api) {
+    $api->post('users', function () {
         $rules = [
             'username' => ['required', 'alpha'],
             'password' => ['required', 'min:7']
         ];
 
-        $payload = Input::only('username', 'password');
+        $payload = app('request')->only('username', 'password');
 
-        $validator = Validator::make($payload, $rules);
+        $validator = app('validator')->make($payload, $rules);
 
         if ($validator->fails()) {
             throw new Dingo\Api\Exception\StoreResourceFailedException('Could not create new user.', $validator->errors());
@@ -104,10 +104,10 @@ You can create your own custom HTTP exceptions so long as they extend from `Symf
 
 ### Custom Exception Responses
 
-If you need to customize the response that exceptions return you can register a custom handler.
+If you need to customize the response that exceptions return you can register a custom error handler.
 
 ```php
-API::error(function (Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException $exception) {
+$app['Dingo\Api\Exception\Handler']->register(function (Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException $exception) {
     return Response::make(['error' => 'Hey, what do you think you are doing!?'], 401);
 });
 ```

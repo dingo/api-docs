@@ -30,19 +30,19 @@ The package will automatically format the response as JSON and set the `Content-
 
 The response builder provides a fluent interface to easily build a more customizable response. The response builder is generally used in conjunction with **transformers**.
 
-To utilize the response builder your controllers should use the `Dingo\Api\Routing\ControllerTrait` trait. To save importing and using the trait on all your controllers you can simply create a base controller that all your API controllers will extend.
+To utilize the response builder your controllers should use the `Dingo\Api\Routing\Helpers` trait. To save importing and using the trait on all your controllers you can simply create a base controller that all your API controllers will extend.
 
 ```php
+use Dingo\Api\Routing\Helpers;
 use Illuminate\Routing\Controller;
-use Dingo\Api\Routing\ControllerTrait;
 
 class BaseController extends Controller
 {
-	use ControllerTrait;
+	use Helpers;
 }
 ```
 
-Now your controllers can simply extend this base controller. The response builder is available via the `$response` property on your controller. Note that all the methods below can also be used as `withX`.
+Now your controllers can simply extend this base controller. The response builder is available via the `$response` property on your controller. Note that all the methods below can also be used as `withX` should you prefer that syntax.
 
 #### Responding With An Array
 
@@ -172,16 +172,20 @@ return $this->response->item($user, new UserTransformer)->setStatusCode(200);
 
 ### Custom Response Formats
 
-Earlier it was mentioned that by default the package will automatically use the JSON format and set an appropriate `Content-Type` header. Aside from a JSON formatter there is also a JSONP formatter. This formatter will wrap the responses in a callback. To register this format you can simply swap out the default JSON formatter in the configuration file.
+In the **configuration** chapter we briefly touched on response formats. By default the package will automatically use the JSON format and set an appropriate `Content-Type` header. Aside from a JSON formatter there is also a JSONP formatter. This formatter will wrap the responses in a callback. To register this format you can simply swap out the default JSON formatter in the configuration file or in your bootstrap file.
 
 ```php
 'formats' => [
-    'json' => 'Dingo\Api\Http\ResponseFormat\JsonpResponseFormat'
+    'json' => 'Dingo\Api\Http\Response\Format\Jsonp'
 ]
 ```
 
-The JSONP will look for a callback name in the query string of the request and if it's not found it will default to a JSON response.
+```php
+Dingo\Api\Http\Response::addFormatter('json', new Dingo\Api\Http\Response\Format\Jsonp);
+```
 
-You can also register and use your own formatters should you need to. Your formatter should extend `Dingo\Api\Http\ResponseFormat\ResponseFormat`.  There following methods should be defined: `formatEloquentModel`, `formatEloquentCollection`, `formatArray`, and `getContentType`. Refer to the abstract class for more details on what each method should do or take a look at the `JsonResponseFormat` class.
+By default the callback parameter is `callback`, this can be changed by passing in the first parameter to the class constructor. If the query string does not contain a parameter with the name of your callback parameter it will default to a JSON response.
+
+You can also register and use your own formatters should you need to. Your formatter should extend `Dingo\Api\Http\Response\Format\Format`.  There following methods should be defined: `formatEloquentModel`, `formatEloquentCollection`, `formatArray`, and `getContentType`. Refer to the abstract class for more details on what each method should do or take a look at the `Dingo\Api\Http\Response\Format\Json` class.
 
 [← Creating API Endpoints](https://github.com/dingo/api/wiki/Creating-API-Endpoints) | [Errors And Error Responses →](https://github.com/dingo/api/wiki/Errors-And-Error-Responses)
