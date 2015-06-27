@@ -13,6 +13,9 @@ There are a couple ways to make use of transformers.
 
 #### Register A Transformer For A Class
 
+When you register a transformer for a given class you'll be able to return the class (assuming it can be turned into an array) directly from your routes and it'll
+be run through the transformer automatically. This is great for simple APIs where you're using models as you can simply return the model from your route.
+
 ```php
 $app['Dingo\Api\Transformer\Factory']->register('User', 'UserTransformer');
 ```
