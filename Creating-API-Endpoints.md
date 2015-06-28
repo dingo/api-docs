@@ -66,6 +66,23 @@ $api->version('v2', function ($api) {
 
 You can also register resources and controllers using the respective methods.
 
+##### Named Routes And Generating URLs
+
+Naming your routes lets you easily generate URLs to them. You can name your routes in the exact same way as you do in Laravel.
+
+```php
+$api->get('users/{id}', ['as' => 'users.index', 'uses' => 'Api\V1\UserController@show']);
+```
+
+Now you can generate a URL to the named route.
+
+```php
+app('Dingo\Api\Routing\UrlGenerator')->version('v1')->route('users.index');
+```
+
+You must supply a version so that the URL can be properly generated based on the route within that version. This let's you use the
+same name across multiple versions.
+
 #### Viewing Routes In The Console
 
 If you're using Laravel 5.1 you can see the registered routes using Artisan.
