@@ -73,5 +73,6 @@ Or register it in your bootstrap file.
 
 ```php
 app('api.limiting')->extend(new CustomThrottle(['limit' => 200, 'expires' => 10]));
+```
 
 [← Authentication](https://github.com/dingo/api/wiki/Authentication) | [Internal Requests →](https://github.com/dingo/api/wiki/Internal-Requests)
