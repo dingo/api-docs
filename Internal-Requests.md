@@ -118,4 +118,45 @@ All internal requests return the pre-transformed and pre-formatted data. If, for
 $response = $dispatcher->raw()->get('users');
 ```
 
+#### Handling Exceptions
+
+Any exceptions thrown in your endpoints will be rethrown for you to manually catch when performing internal requests.
+
+```php
+public function store()
+{
+    throw new Symfony\Component\HttpKernel\Exception\ConflictHttpException('We got a conflict!');
+}
+```
+
+If we were to internally call the above endpoint we'd need to catch the exception thrown.
+
+```php
+try {
+    app('Dingo\Api\Dispatcher')->with($payload)->post('users');
+} catch (Symfony\Component\HttpKernel\Exception\ConflictHttpException $e) {
+    // Do something here, like return with an error.
+}
+```
+
+The package may also throw a `Dingo\Api\Exception\InternalHttpException` when an error response is returned. If you're using the response builder to return errors then you'll need to catch the thrown exception. The response will be available on the exception.
+
+```php
+public function show($id)
+{
+    return $this->response->errorNotFound('Could not find the user.');
+}
+```
+
+When internally calling this endpoint we'll need to catch the exception.
+
+```php
+try {
+    app('Dingo\Api\Dispatcher')->get('users/1');
+} catch (Dingo\Api\Exception\InternalHttpException $e) {
+    // We can get the response here to check the status code of the error or response body.
+    $response = $e->getResponse();
+}
+```
+
 [← Authentication](https://github.com/dingo/api/wiki/Authentication) | [OAuth 2.0 →](https://github.com/dingo/api/wiki/OAuth-2.0)
