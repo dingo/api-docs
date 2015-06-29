@@ -11,4 +11,6 @@ The Dingo API package is meant to provide you, the developer, with a set of tool
 9. [Internal Requests](https://github.com/dingo/api/wiki/Internal-Requests)
 10. [OAuth 2.0](https://github.com/dingo/api/wiki/OAuth-2.0)
 11. [Making Requests To Your API](https://github.com/dingo/api/wiki/Making-Requests-To-Your-API)
-12. [Package Incompatibilities](https://github.com/dingo/api/wiki/Package-Incompatibilities)
+12. [API Blueprint Documentation](https://github.com/dingo/api/wiki/API-Blueprint-Documentation)
+13. [Commands](https://github.com/dingo/api/wiki/Commands)
+14. [Package Incompatibilities](https://github.com/dingo/api/wiki/Package-Incompatibilities)
