@@ -92,6 +92,7 @@ $app['Dingo\Api\Transformer\Factory']->setTransformer(function ($app) {
 
     return $transformer;
 });
+```
 
 #### Response Formats
 
