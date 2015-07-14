@@ -107,7 +107,7 @@ You can create your own custom HTTP exceptions so long as they extend from `Symf
 If you need to customize the response that exceptions return you can register a custom error handler.
 
 ```php
-$app['Dingo\Api\Exception\Handler']->register(function (Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException $exception) {
+app('Dingo\Api\Exception\Handler')->register(function (Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException $exception) {
     return Response::make(['error' => 'Hey, what do you think you are doing!?'], 401);
 });
 ```

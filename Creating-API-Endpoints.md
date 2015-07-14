@@ -5,7 +5,7 @@ An endpoint is simply another term for a route. When talking about APIs many peo
 To avoid complications with your main application routes this package utilizes its own router. As such we must first get an instance of the API router to create our endpoints.
 
 ```php
-$api = $app['Dingo\Api\Routing\Router'];
+$api = app('Dingo\Api\Routing\Router');
 ```
 
 We must now define a version group. This allows us to create the same endpoint for multiple versions should we need to change things down the track.

@@ -6,12 +6,12 @@ By default rate limiting is applied to a clients IP address. To change this defa
 to be used by the rate limiter.
 
 ```php
-app('api.limiter')->setRateLimiter(function ($container, $request) {
-    return $container['example']->getRateLimiterKey();
+app('Dingo\Api\Http\RateLimit\Handler')->setRateLimiter(function ($app, $request) {
+    return $app['example']->getRateLimiterKey();
 });
 ```
 
-The first parameter will be the IoC container and the second is the request instance that is being rate limited.
+The first parameter will be the application IoC container instance and the second is the request instance that is being rate limited.
 
 ### Route Specific Throttling
 
@@ -72,7 +72,7 @@ You can then configure your throttle.
 Or register it in your bootstrap file.
 
 ```php
-app('api.limiting')->extend(new CustomThrottle(['limit' => 200, 'expires' => 10]));
+app('Dingo\Api\Http\RateLimit\Handler')->extend(new CustomThrottle(['limit' => 200, 'expires' => 10]));
 ```
 
 [← Authentication](https://github.com/dingo/api/wiki/Authentication) | [Internal Requests →](https://github.com/dingo/api/wiki/Internal-Requests)

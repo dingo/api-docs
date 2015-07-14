@@ -123,7 +123,7 @@ Once you've implemented your authentication provider you can configure it.
 Or from your bootstrap file.
 
 ```php
-$app['Dingo\Api\Auth\Auth']->extend('custom', function ($app) {
+app('Dingo\Api\Auth\Auth')->extend('custom', function ($app) {
     return new CustomProvider;
 });
 

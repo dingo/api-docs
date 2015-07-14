@@ -17,7 +17,7 @@ When you register a transformer for a given class you'll be able to return the c
 be run through the transformer automatically. This is great for simple APIs where you're using models as you can simply return the model from your route.
 
 ```php
-$app['Dingo\Api\Transformer\Factory']->register('User', 'UserTransformer');
+app('Dingo\Api\Transformer\Factory')->register('User', 'UserTransformer');
 ```
 
 #### Use The Response Builder
@@ -47,7 +47,7 @@ Fractal is registered as the default transformation layer and with the default o
 If you're using Lumen you can do this in your bootstrap file.
 
 ```php
-$app['Dingo\Api\Transformer\Factory']->setTransformer(function ($app) {
+app('Dingo\Api\Transformer\Factory')->setTransformer(function ($app) {
     return new Dingo\Api\Transformer\Adapter\Fractal(new League\Fractal\Manager, 'include', ',');
 });
 ```
