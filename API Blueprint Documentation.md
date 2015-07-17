@@ -54,7 +54,7 @@ An action is represented by a routable method on your controller.
 
 You can describe your action with the short and long descriptions of a PHPDoc.
 
-```
+```php
 /**
  * Show all users
  *
