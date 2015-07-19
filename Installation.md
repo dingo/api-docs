@@ -7,14 +7,14 @@ You must then modify your `composer.json` file and run `composer update` to incl
 
 ```json
 "require": {
-    "dingo/api": "0.9.*"
+    "dingo/api": "0.10.*"
 }
 ```
 
 Or you can run the `composer require` command from your terminal.
 
 ```
-composer require dingo/api:0.9.*
+composer require dingo/api:0.10.*
 ```
 
 > At this time the package is still in a developmental stage and as such does not have a **stable** release.

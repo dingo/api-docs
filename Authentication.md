@@ -129,12 +129,12 @@ app('Dingo\Api\Auth\Auth')->extend('custom', function ($app) {
 
 ### Protecting Endpoints
 
-You can enable or disable protection at the route or group level by setting the `protected` flag to either `true` or `false` in the attributes.
+You can enable or disable protection at the route or group level by enabled the `api.auth` route middleware.
 
 #### Require Authentication On All Routes
 
 ```php
-$api->version('v1', ['protected' => true], function ($api) {
+$api->version('v1', ['middleware' => 'api.auth'], function ($api) {
     // Routes within this version group will require authentication.
 });
 ```
@@ -143,7 +143,7 @@ $api->version('v1', ['protected' => true], function ($api) {
 
 ```php
 $api->version('v1', function ($api) {
-    $api->get('user', ['protected' => true, function () {
+    $api->get('user', ['middleware' => 'api.auth', function () {
         // This route requires authentication.
     }]);
 
@@ -153,27 +153,13 @@ $api->version('v1', function ($api) {
 });
 ```
 
-#### Do Not Require Authentication On Specific Routes
-
-```php
-$api->version('v1', ['protected' => true], function ($api) {
-    $api->get('user', function () {
-        // This route requires authentication.
-    });
-
-    $api->get('posts', ['protected' => false, function () {
-        // This route does not require authentication.
-    }]);
-});
-```
-
 #### Allow Only Specific Authentication Providers
 
-If you want to set a specific authentication provider on a group of routes or specific route you can do so in the options.
+If you want to set a specific authentication provider on a group of routes or specific route you can do so using the `providers` key.
 
 ```php
 $api->version('v1', function ($api) {
-    $api->get('user', ['protected' => true, 'providers' => ['basic', 'oauth'], function () {
+    $api->get('user', ['middleware' => 'api.auth', 'providers' => ['basic', 'oauth'], function () {
         // This route requires authentication.
     }]);
 });
@@ -181,32 +167,19 @@ $api->version('v1', function ($api) {
 
 #### Require Authentication On Controller Methods
 
-If your controllers use the `Dingo\Api\Routing\Helpers` trait then you can use the `protect` and `unprotect` methods in your controllers constructor.
+Setting middleware on controllers is available in both Laravel and Lumen. From your constructor you may use the `middleware` method.
 
 ```php
-use Dingo\Api\Routing\Helpers;
-
-class UserController extends Controller
+class UserController extends Illuminate\Routing\Controller
 {
     use Helpers;
 
     public function __construct()
     {
-        $this->protect('index');
+        $this->middleware('api.auth');
 
-        // You can also pass an array of methods.
-        $this->protect(['index', 'posts']);
-
-        // This is the same as only protected the methods provided.
-        $this->protect(['only' => ['index']]);
-
-        // Protect all methods except those provided.
-        $this->protect(['except' => ['posts']]);
-
-        // Do not pass in any method names to protect all methods.
-        $this->protect();
-
-        // The same rules apply to the "unprotect" method.
+        // Only apply to a subset of methods.
+        $this->middleware('api.auth', ['only' => ['index']]);
     }
 
     public function index()
@@ -223,10 +196,10 @@ class UserController extends Controller
 
 ### Retrieving Authenticated User
 
-Within a protected endpoint you can retrieve the authenticated users instance.
+Within a protected endpoint you can retrieve the authenticated user.
 
 ```php
-$api->version('v1', ['protected' => true], function ($api) {
+$api->version('v1', ['middleware' => 'api.auth'], function ($api) {
     $api->get('user', function () {
         $user = app('Dingo\Api\Auth\Auth')->user();
 
@@ -239,10 +212,16 @@ If your controllers use the `Dingo\Api\Routing\Helpers` trait then you can use t
 
 ```php
 use Dingo\Api\Routing\Helpers;
+use Illuminate\Routing\Controller;
 
 class UserController extends Controller
 {
     use Helpers;
+
+    public function __construct()
+    {
+        $this->middleware('api.auth');
+    }
 
     public function index()
     {
