@@ -15,7 +15,7 @@ Your vendor name is typically a short name of your application, all lowercase.
 You can configure this in your `.env` file.
 
 ```
-API_PREFIX=app
+API_VENDOR=app
 ```
 
 #### Prefixes and Subdomains
