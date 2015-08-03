@@ -30,7 +30,7 @@ $ php artisan api:routes --scopes read_user_data --scopes write_user_data
 
 **Only available in Laravel 5.1+**
 
-This command will cache your API routes alongside the main application routes. When run this command will also run the `routes:cache` command automatically, so do not run that command after running this command.
+This command will cache your API routes alongside the main application routes. When run this command will also run the `route:cache` command automatically, so do not run that command after running this command.
 
 Your routes should either appear in the main `app/Http/routes.php` file or be included within that file for caching to take affect.
 
@@ -51,13 +51,13 @@ By default the command will output the generated documentation to `stdout` where
 ##### Examples
 
 ```
-$ php artisan api:docs --name Example --use-version v2
+$ php artisan api:docs Example v2
 ```
 
-Output directly to a file with `--output-file`.
+Output directly to a file with `--file`.
 
 ```
-$ php artisan php:docs --name Example --use-version v2 --output-file /path/to/documentation.md
+$ php artisan api:docs Example v2 --file /path/to/documentation.md
 ```
 
 To avoid defining the name and version manually, you can configure defaults in your configuration file or environment file. For more see the [configuration](https://github.com/dingo/api/wiki/Configuration) chapter.
