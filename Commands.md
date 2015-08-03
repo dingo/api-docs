@@ -51,13 +51,15 @@ By default the command will output the generated documentation to `stdout` where
 ##### Examples
 
 ```
-$ php artisan api:docs Documentation v1
+$ php artisan api:docs --name Example --use-version v2
 ```
 
-Output directly to a file with `--file`.
+Output directly to a file with `--output-file`.
 
 ```
-$ php artisan php:docs Documentation v1 --file="/path/to/documentation.md"
+$ php artisan php:docs --name Example --use-version v2 --output-file /path/to/documentation.md
 ```
+
+To avoid defining the name and version manually, you can configure defaults in your configuration file or environment file. For more see the [configuration](https://github.com/dingo/api/wiki/Configuration) chapter.
 
 [← API Blueprint Documentation](https://github.com/dingo/api/wiki/API-Blueprint-Documentation)

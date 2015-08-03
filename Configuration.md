@@ -34,6 +34,28 @@ Or you can use a domain.
 API_DOMAIN=api.myapp.com
 ```
 
+#### Version
+
+This version is the default version of your API and is used as a fallback in several circumstances whenever a version is not supplied. This version is also used
+as a default version for when generating API documentation.
+
+You can also configure this in your `.env` file.
+
+```
+API_VERSION=v1
+```
+
+#### Name
+
+The name of your API is only used when you're generating documentation using the API Blueprint command. This name is used as a default
+to avoid having to manually define the name whenever you generate documentation.
+
+You can also configure this in your `.env` file.
+
+```
+API_NAME=My API
+```
+
 #### Conditional Requests
 
 By default conditional requests are enabled as it will utilize the clients caching capabilities when possible to cache API requests.
