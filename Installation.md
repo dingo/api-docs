@@ -46,4 +46,16 @@ Open `bootstrap/app.php` and register the required service provider.
 $app->register(Dingo\Api\Provider\LumenServiceProvider::class);
 ```
 
+### Facades
+
+There are two facades shipped with the package. You can add either of them should you wish.
+
+#### `Dingo\Api\Facade\API`
+
+This is a facade for the dispatcher, however, it also provides helper methods for other methods throughout the package.
+
+#### `Dingo\Api\Facade\Route`
+
+This is a facade for the API router and can be used to fetch the current route, request, check the current route name, etc.
+
 [Configuration →](https://github.com/dingo/api/wiki/Configuration)
