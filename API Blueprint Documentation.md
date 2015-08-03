@@ -216,11 +216,11 @@ A transaction lets you define multiple requests and multiple responses for reque
  *
  * @Post("/")
  * @Versions({"v1"})
- * @Transaction(
+ * @Transaction({
  *      @Request({"username": "foo", "password": "bar"}),
  *      @Response(200, body={"id": 10, "username": "foo"}),
  *      @Response(422, body={"error": {"username": {"Username is already taken."}}})
- * )
+ * })
  */
 public function store()
 {
@@ -240,10 +240,10 @@ If your URI contains query string parameters you can define them either at the r
  *
  * @Get("/{?page,limit}")
  * @Versions({"v1"})
- * @Parameters(
+ * @Parameters({
  *      @Parameter("page", description="The page of results to view.", default=1),
  *      @Parameter("limit", description="The amount of results per page.", default=10)
- * )
+ * })
  */
 public function index()
 {
@@ -255,9 +255,9 @@ You can also define the parameters `type` and whether or not it's `required`.
 
 ```php
 /**
- * @Parameters(
+ * @Parameters({
  *      @Parameter("example", type="integer", required=true description="This is an example.", default=1)
- * )
+ * })
  */
 public function index()
 {
