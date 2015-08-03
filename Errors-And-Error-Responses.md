@@ -120,4 +120,13 @@ Now if authentication fails we'll be presented with the following JSON represent
 }
 ```
 
+### Form Requests
+
+If you're using form requests then you will need to either extend the base API form request class or implement your own. The base API form request class will
+check to see if the incoming request is for the API, and, if it is, it will throw a `Dingo\Api\Exception\ValidationHttpException` if validation fails.
+
+This exception will then be rendered correctly by the package and the error response returned.
+
+If you'd like to implement your own form request you *must* overload the `failedValidation` and `failedAuthorization` methods. These methods *must* throw one of the above mentioned exceptions and not the response HTTP exceptions that Laravel throws.
+
 [← Responses](https://github.com/dingo/api/wiki/Responses) | [Transformers →](https://github.com/dingo/api/wiki/Transformers)
