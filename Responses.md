@@ -184,8 +184,47 @@ In the **configuration** chapter we briefly touched on response formats. By defa
 Dingo\Api\Http\Response::addFormatter('json', new Dingo\Api\Http\Response\Format\Jsonp);
 ```
 
-By default the callback parameter is `callback`, this can be changed by passing in the first parameter to the class constructor. If the query string does not contain a parameter with the name of your callback parameter it will default to a JSON response.
+By default the callback parameter expected in the query string is `callback`, this can be changed by passing in the first parameter to the class constructor. If the query string does not contain a parameter with the name of your callback parameter it will default to a JSON response.
 
-You can also register and use your own formatters should you need to. Your formatter should extend `Dingo\Api\Http\Response\Format\Format`.  There following methods should be defined: `formatEloquentModel`, `formatEloquentCollection`, `formatArray`, and `getContentType`. Refer to the abstract class for more details on what each method should do or take a look at the `Dingo\Api\Http\Response\Format\Json` class.
+You can also register and use your own formatters should you need to. Your formatter should extend `Dingo\Api\Http\Response\Format\Format`. There following methods should be defined: `formatEloquentModel`, `formatEloquentCollection`, `formatArray`, and `getContentType`. Refer to the abstract class for more details on what each method should do or take a look at the pre-defined format classes.
+
+### Morphing And Morphed Events
+
+Before this package sends a response it will first `morph` the response. This process involves running any transformers as well as sending the response through the configured formatter. If you need more control of how a response is morphed you can use the `ResponseWasMorphed` and `ResponseIsMorphing` events.
+
+Create a listener for either event in your `app/Listeners` directory.
+
+```php
+use Dingo\Api\Event\ResponseWasMorphed;
+
+class AddPaginationLinksToResponse
+{
+	public function handle(ResponseWasMorphed $event)
+	{
+		if (isset($event->content['meta']['pagination'])) {
+			$links = $event->content['meta']['pagination']['links'];
+
+			$event->response->headers->set(
+				'link',
+				sprintf('<%s>; rel="next", <%s>; rel="prev"', $links['links']['next'], $links['links']['previous'])
+			);
+		}
+	}
+}
+```
+
+You can then listen for the events by adding the event and your listener in your `EventServiceProvider`.
+
+```php
+protected $listen = [
+    'Dingo\Api\Event\ResponseWasMorphed' => [
+    	'App\Listeners\AddPaginationLinksToResponse'
+    ]
+];
+```
+
+Now all responses that contain pagination links will also add these links to the `Link` header.
+
+> Note that this code isn't production ready and is merely a demonstration of how you can utilize the events.
 
 [← Creating API Endpoints](https://github.com/dingo/api/wiki/Creating-API-Endpoints) | [Errors And Error Responses →](https://github.com/dingo/api/wiki/Errors-And-Error-Responses)
