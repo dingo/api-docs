@@ -7,7 +7,7 @@ By using scopes you'll have more control over who can access your protected endp
 #### Route Group Scopes
 
 ```php
-$api->version('v1', ['protected' => true, 'scopes' => ['read_user_data', 'write_user_data']], function ($api) {
+$api->version('v1', ['middleware' => 'api.auth', 'scopes' => ['read_user_data', 'write_user_data']], function ($api) {
     // Only access tokens with the "read_user_data" scope will be given access.
 });
 ```
@@ -15,7 +15,7 @@ $api->version('v1', ['protected' => true, 'scopes' => ['read_user_data', 'write_
 #### Specific Route Scopes
 
 ```php
-$api->version('v1', ['protected' => true], function ($api) {
+$api->version('v1', ['middleware' => 'api.auth'], function ($api) {
     $api->get('user', ['scopes' => 'read_user_data', function () {
         // Only access tokens with the "read_user_data" scope will be given access.
     }]);
