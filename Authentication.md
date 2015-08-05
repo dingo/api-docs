@@ -126,6 +126,7 @@ Or from your bootstrap file.
 app('Dingo\Api\Auth\Auth')->extend('custom', function ($app) {
     return new CustomProvider;
 });
+```
 
 ### Protecting Endpoints
 
