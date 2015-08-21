@@ -109,12 +109,12 @@ Fractal is the default response transformer.
 You can configure this in your `.env`. file, however, advanced configuration will need to take place in a published configuration file or in your bootstrap file.
 
 ```php
-$app['Dingo\Api\Transformer\Factory']->setTransformer(function ($app) {
-    $transformer = new League\Fractal\Manager;
+$app['Dingo\Api\Transformer\Factory']->setAdapter(function ($app) {
+    $fractal = new League\Fractal\Manager;
 
-    $transformer->setSerializer(new League\Fractal\Serializer\JsonApiSerializer);
+    $fractal->setSerializer(new League\Fractal\Serializer\JsonApiSerializer);
 
-    return $transformer;
+    return new Dingo\Api\Transformer\Adapter\Fractal($fractal);
 });
 ```
 
