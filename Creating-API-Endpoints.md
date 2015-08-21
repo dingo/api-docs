@@ -48,7 +48,7 @@ Once you have a version group you can start to create your endpoints using the `
 
 ```php
 $api->version('v1', function ($api) {
-    $api->get('users/{id}', 'Api\UserController@show');
+    $api->get('users/{id}', 'App\Api\Controllers\UserController@show');
 });
 ```
 
@@ -56,15 +56,17 @@ Because endpoints are grouped per version you can use the exact same URI to crea
 
 ```php
 $api->version('v1', function ($api) {
-    $api->get('users/{id}', 'Api\V1\UserController@show');
+    $api->get('users/{id}', 'App\Api\V1\Controllers\UserController@show');
 });
 
 $api->version('v2', function ($api) {
-    $api->get('users/{id}', 'Api\V2\UserController@show');
+    $api->get('users/{id}', 'App\Api\V2\Controllers\UserController@show');
 });
 ```
 
 You can also register resources and controllers using the respective methods.
+
+> Note that you must specify the full namespace to the controller, e.g., `App\Http\Controllers`.
 
 ##### Named Routes And Generating URLs
 
