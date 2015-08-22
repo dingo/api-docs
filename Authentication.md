@@ -24,7 +24,7 @@ This provider is configured by default, however, if you need to configure the id
 
 This package makes use of a 3rd party package to integrate JWT authentication. Please refer to the [`tymon/jwt-auth`](https://github.com/tymondesigns/jwt-auth) GitHub page for details on installing and configuring the package.
 
-Once you have the package you can configure the provider.
+Once you have the package you can configure the provider (In your config/app.php file).
 
 ```php
 'jwt' => function ($app) {
@@ -38,7 +38,7 @@ This package makes use of a 3rd party package to integrate OAuth 2.0. You can ei
 
 > For simplicity this guide will assume you are using the bridge package.
 
-Once you have the package you can configure the provider.
+Once you have the package you can configure the provider (In your config/app.php file).
 
 ```php
 'oauth' => function ($app) {
