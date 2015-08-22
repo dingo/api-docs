@@ -44,6 +44,8 @@ class BaseController extends Controller
 
 Now your controllers can simply extend this base controller. The response builder is available via the `$response` property on your controller. Note that all the methods below can also be used as `withX` should you prefer that syntax.
 
+> Some of the documentation below makes use of [Transformers](https://github.com/dingo/api/wiki/Transformers), be sure to read that chapter for more details.
+
 #### Responding With An Array
 
 ```php
@@ -59,8 +61,6 @@ class UserController extends BaseController
 ```
 
 #### Responding With A Single Item
-
-[More info on how to create create a Transformer can be found in the Fractal documentation.](http://fractal.thephpleague.com/transformers/)
 
 ```php
 class UserController extends BaseController
