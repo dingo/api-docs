@@ -98,7 +98,7 @@ API_STRICT=false
 
 By default only `basic` authentication is enabled. Authentication is covered in more detail in a later chapter.
 
-You must configure this in a published configuration file or in your bootstrap file.
+For more complex configuration you will need a service provider or bootstrap file.
 
 ```php
 $app['Dingo\Api\Auth\Auth']->extend('oauth', function ($app) {
@@ -110,7 +110,7 @@ $app['Dingo\Api\Auth\Auth']->extend('oauth', function ($app) {
 
 By default rate limiting is disabled. You can register your custom throttles with the rate limiter or use the existing authenticated and unauthenticated throttles.
 
-You must configure this in a published configuration file or in your bootstrap file.
+For more complex configuration you will need a service provider or bootstrap file.
 
 ```php
 $app['Dingo\Api\Http\RateLimit\Handler']->extend(function ($app) {
@@ -122,7 +122,7 @@ $app['Dingo\Api\Http\RateLimit\Handler']->extend(function ($app) {
 
 Fractal is the default response transformer.
 
-You can configure this in your `.env`. file, however, advanced configuration will need to take place in a published configuration file or in your bootstrap file.
+You can configure this in your `.env`. file, however, for more complex configuration you will need a service provider or bootstrap file.
 
 ```php
 $app['Dingo\Api\Transformer\Factory']->setAdapter(function ($app) {
@@ -138,7 +138,7 @@ $app['Dingo\Api\Transformer\Factory']->setAdapter(function ($app) {
 
 The default response format is JSON and a JSON response format is registered by default.
 
-You can configure the default response format in your `.env` file. Further response format configuration will need to take place in a published configuration file or in your bootstrap file.
+You can configure the default response format in your `.env` file. Further response format configuration will need to take place in a published configuration file, a service provider, or in your bootstrap file.
 
 ```
 API_DEFAULT_FORMAT=json

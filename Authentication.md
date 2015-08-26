@@ -12,24 +12,28 @@ By default only HTTP Basic authentication is enabled in the configuration file. 
 
 #### HTTP Basic
 
-This provider is configured by default, however, if you need to configure the identifier used to authenticate a user you can do so by passing it in as the second parameter when instantiating the provider in your `config/app.php` file.
+This provider is configured by default, however, if you need to configure the identifier used to authenticate a user you will need to configure it in a service provider or a bootstrap file.
 
 ```php
-'basic' => function ($app) {
+app('Dingo\Api\Auth\Auth')->extend('basic', function ($app) {
    return new Dingo\Api\Auth\Provider\Basic($app['auth'], 'email');
-}
+});
 ```
 
 #### JSON Web Tokens (JWT)
 
 This package makes use of a 3rd party package to integrate JWT authentication. Please refer to the [`tymon/jwt-auth`](https://github.com/tymondesigns/jwt-auth) GitHub page for details on installing and configuring the package.
 
-Once you have the package you can configure the provider in your `config/app.php` file.
+Once you have the package you can configure the provider in your `config/api.php` file or in a service provider or bootstrap file.
 
 ```php
-'jwt' => function ($app) {
-    return new Dingo\Api\Auth\Provider\JWT($app['Tymon\JWTAuth\JWTAuth']);
-}
+'jwt' => 'Dingo\Api\Auth\Provider\JWT'
+```
+
+```php
+app('Dingo\Api\Auth\Auth')->extend('jwt', function ($app) {
+   return new Dingo\Api\Auth\Provider\JWT($app['Tymon\JWTAuth\JWTAuth']);
+});
 ```
 
 #### OAuth 2.0
@@ -38,11 +42,11 @@ This package makes use of a 3rd party package to integrate OAuth 2.0. You can ei
 
 > For simplicity this guide will assume you are using the bridge package.
 
-Once you have the package you can configure the provider in your `config/app.php` file.
+Once you have the package you will need to configure it in a service provider or bootstrap file.
 
 ```php
-'oauth' => function ($app) {
-    $provider = new Dingo\Api\Auth\Provider\OAuth2($app['oauth2-server.authorizer']->getChecker());
+app('Dingo\Api\Auth\Auth')->extend('oauth', function ($app) {
+   $provider = new Dingo\Api\Auth\Provider\OAuth2($app['oauth2-server.authorizer']->getChecker());
 
     $provider->setUserResolver(function ($id) {
         // Logic to return a user by their ID.
@@ -53,7 +57,7 @@ Once you have the package you can configure the provider in your `config/app.php
     });
 
     return $provider;
-}
+});
 ```
 
 ##### User And Client Resolvers
@@ -112,15 +116,13 @@ class CustomProvider extends Authorization
 }
 ```
 
-Once you've implemented your authentication provider you can configure it.
+Once you've implemented your authentication provider you can configure it in your `config/api.php` file.
 
 ```php
-'custom' => function ($app) {
-    return new CustomProvider;
-}
+'custom' => 'CustomProvider'
 ```
 
-Or from your bootstrap file.
+Or from your bootstrap file or service provider.
 
 ```php
 app('Dingo\Api\Auth\Auth')->extend('custom', function ($app) {
