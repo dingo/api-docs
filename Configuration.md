@@ -8,14 +8,30 @@ If you're using Laravel you can publish the configuration file with the followin
 php artisan vendor:publish --provider="Dingo\Api\Provider\LaravelServiceProvider"
 ```
 
-#### Vendor
+#### Standards Tree
 
-Your vendor name is typically a short name of your application, all lowercase.
+There's three different trees: `x`, `prs`, and `vnd`. The standards tree you use will depend upon the project you're developing.
+
+- The unregistered tree (`x`) is primarily meant for local or private environments.
+- The personal tree (`prs`) is primarily meant for projects that are not distributed commerically.
+- The vendor tree (`vnd`) is primarily meant for projects that are publically available and distributed.
+
+> Subtypes using the personal or vendor trees are *technically* meant to register with the IANA.
 
 You can configure this in your `.env` file.
 
 ```
-API_VENDOR=app
+API_STANDARDS_TREE=vnd
+```
+
+#### Subtype
+
+Your subtype is typically a short name of your application or project, all lowercase.
+
+You can configure this in your `.env` file.
+
+```
+API_SUBTYPE=myapp
 ```
 
 #### Prefixes and Subdomains
