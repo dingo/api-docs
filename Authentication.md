@@ -12,7 +12,7 @@ By default only HTTP Basic authentication is enabled in the configuration file. 
 
 #### HTTP Basic
 
-This provider is configured by default, however, if you need to configure the identifier used to authenticate a user you will need to configure it in a service provider or a bootstrap file.
+This provider uses the default basic authentication built into Laravel and Lumen. You will need to configure this provider in a service provider or bootstrap file. The second parameter is the identifier used to authenticate.
 
 ```php
 app('Dingo\Api\Auth\Auth')->extend('basic', function ($app) {
