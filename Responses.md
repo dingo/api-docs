@@ -81,7 +81,7 @@ class UserController extends BaseController
 {
 	public function index()
 	{
-		$users = User::all()
+		$users = User::all();
 
 		return $this->response->collection($users, new UserTransformer);
 	}
@@ -95,7 +95,7 @@ class UserController extends BaseController
 {
 	public function index()
 	{
-		$users = User::paginate(25)
+		$users = User::paginate(25);
 
 		return $this->response->paginator($users, new UserTransformer);
 	}
