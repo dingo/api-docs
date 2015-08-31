@@ -89,7 +89,7 @@ return $this->collection($users, new UserTransformer, function ($resource, $frac
 Should you need a more custom approach to how your data is transformed then you can easily implement your transformation layer with this package. You'll need to create a class that implements `Dingo\Api\Contract\Transformer\Adapter` and has the required `transform` method.
 
 ```php
-use Illuminate\Http\Request;
+use Dingo\Api\Http\Request;
 use Dingo\Api\Transformer\Binding;
 use Dingo\Api\Contract\Transformer\Adapter;
 
