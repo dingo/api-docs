@@ -60,10 +60,10 @@ app('Dingo\Api\Auth\Auth')->extend('oauth', function ($app) {
 });
 ```
 
-An example of a service provider would look like this:
+Or from within a service provider.
 
 ```php
-namespace Acme\Api\Oauth;
+namespace App\Providers;
 
 use Dingo\Api\Auth\Auth;
 use Dingo\Api\Auth\Provider\OAuth2;
@@ -90,6 +90,7 @@ class OAuthServiceProvider extends ServiceProvider
 
     public function register()
     {
+        //
     }
 }
 ```
