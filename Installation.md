@@ -24,7 +24,7 @@ Once the package is installed the next step is dependant on which framework you'
 
 ### Laravel
 
-Open `config/app.php` and register the required service provider.
+Open `config/app.php` and register the required service provider **above** your application providers.
 
 ```php
 'providers' => [
