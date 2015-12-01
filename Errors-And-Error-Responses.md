@@ -2,23 +2,23 @@ Dealing with errors when building an API can be a pain. Instead of manually buil
 
 Here is a list of built-in Symfony exceptions.
 
-```php
-Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException
-Symfony\Component\HttpKernel\Exception\BadRequestHttpException
-Symfony\Component\HttpKernel\Exception\ConflictHttpException
-Symfony\Component\HttpKernel\Exception\GoneHttpException
-Symfony\Component\HttpKernel\Exception\HttpException
-Symfony\Component\HttpKernel\Exception\LengthRequiredHttpException
-Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException
-Symfony\Component\HttpKernel\Exception\NotAcceptableHttpException
-Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-Symfony\Component\HttpKernel\Exception\PreconditionFailedHttpException
-Symfony\Component\HttpKernel\Exception\PreconditionRequiredHttpException
-Symfony\Component\HttpKernel\Exception\ServiceUnavailableHttpException
-Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException
-Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException
-Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException
-```
+| Exception                                                                | Status Code |
+|--------------------------------------------------------------------------|------------:|
+| `Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException`         |         403 |
+| `Symfony\Component\HttpKernel\Exception\BadRequestHttpException`           |         400 |
+| `Symfony\Component\HttpKernel\Exception\ConflictHttpException`             |         409 |
+| `Symfony\Component\HttpKernel\Exception\GoneHttpException`                 |         410 |
+| `Symfony\Component\HttpKernel\Exception\HttpException`                     |         500 |
+| `Symfony\Component\HttpKernel\Exception\LengthRequiredHttpException`       |         411 |
+| `Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException`     |         405 |
+| `Symfony\Component\HttpKernel\Exception\NotAcceptableHttpException`        |         406 |
+| `Symfony\Component\HttpKernel\Exception\NotFoundHttpException`             |         404 |
+| `Symfony\Component\HttpKernel\Exception\PreconditionFailedHttpException`   |         412 |
+| `Symfony\Component\HttpKernel\Exception\PreconditionRequiredHttpException` |         428 |
+| `Symfony\Component\HttpKernel\Exception\ServiceUnavailableHttpException`   |         503 |
+| `Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException`      |         429 |
+| `Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException`         |         401 |
+| `Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException` |         415 | 
 
 As an example you might throw a `ConflictHttpException` when you attempt to update a record that has been updated by another user prior to this update request.
 
@@ -47,7 +47,7 @@ The package automatically catches the thrown exception and will convert it into 
 
 ### Resource Exceptions
 
-The following is a list of generic resource exceptions.
+The following is a list of generic resource exceptions. Each of these returns an HTTP 422 status code.
 
 ```php
 Dingo\Api\Exception\DeleteResourceFailedException
