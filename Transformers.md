@@ -39,7 +39,7 @@ When using Fractal's includes feature to embed relationships you should ensure y
 Fractal is registered as the default transformation layer and with the default options. To configure the include key and separator used when defining relationships to embed you must manually instantiate the `Dingo\Api\Transformer\Adapter\Fractal` instance in a service provider or bootstrap file.
 
 ```php
-$this->app['Dingo\Api\Transformer\Factory']->setTransformer(function ($app) {
+$this->app['Dingo\Api\Transformer\Factory']->setAdapter(function ($app) {
      return new Dingo\Api\Transformer\Adapter\Fractal(new League\Fractal\Manager, 'include', ',');
 });
 ```
@@ -47,7 +47,7 @@ $this->app['Dingo\Api\Transformer\Factory']->setTransformer(function ($app) {
 If you're using Lumen you can do this in your bootstrap file.
 
 ```php
-app('Dingo\Api\Transformer\Factory')->setTransformer(function ($app) {
+app('Dingo\Api\Transformer\Factory')->setAdapter(function ($app) {
     return new Dingo\Api\Transformer\Adapter\Fractal(new League\Fractal\Manager, 'include', ',');
 });
 ```
