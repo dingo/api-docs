@@ -32,7 +32,7 @@ Open `config/app.php` and register the required service provider **above** your 
 ]
 ```
 
-If you'd like to make configuration changes in the configuration file you can pubish it with the following Aritsan command:
+If you'd like to make configuration changes in the configuration file you can pubish it with the following Artisan command:
 
 ```
 php artisan vendor:publish --provider="Dingo\Api\Provider\LaravelServiceProvider"
