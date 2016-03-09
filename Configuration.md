@@ -72,6 +72,12 @@ You can also configure this in your `.env` file.
 API_NAME=My API
 ```
 
+You may need to wrap the name in quotes.
+
+```
+API_NAME="My API"
+```
+
 #### Conditional Requests
 
 By default conditional requests are enabled as it will utilize the clients caching capabilities when possible to cache API requests.
