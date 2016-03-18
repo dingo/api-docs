@@ -109,7 +109,7 @@ The resolvers both receive the ID of the user or client and should use this ID t
 
 If you're developing for a legacy system or require some other form of authentication you may implement your own provider.
 
-Your authentication provider should implement `Dingo\Api\Contract\Auth\Provider`. If authentication succeeds your provider should return an instance of the authenticated user. If authentication fails your provider should thrown a `Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException`.
+Your authentication provider should implement `Dingo\Api\Contract\Auth\Provider`. If authentication succeeds your provider should return an instance of the authenticated user. If authentication fails your provider should throw a `Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException`.
 
 ```php
 use Illuminate\Http\Request;
@@ -145,7 +145,7 @@ class CustomProvider extends Authorization
         $this->validateAuthorizationHeader($request);
 
         // If the authorization header passed validation we can continue to authenticate.
-        // If authentication then fails we must throw the UnauthorizedHttpException.
+        // If authentication fails we must throw the UnauthorizedHttpException.
     }
 
     public function getAuthorizationMethod()
