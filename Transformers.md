@@ -2,7 +2,7 @@ Transformers allow you to easily and consistently transform objects into an arra
 
 ### Terminology
 
-The word "transformer" is used quite a bit in this chapter. It's worth noting what the following terms mean when used throughout this chapter.
+The word "transformer" is used quite a bit in this chapter. It's worth nothing what the following terms mean when used throughout this chapter.
 
 - The **transformation layer** is a library that prepares and handles transformers.
 - A **transformer** is a class that will takes raw data and returns it as a presentable array ready for formatting. The way a transformer is handled is dependant upon the transformation layer.
@@ -97,7 +97,7 @@ class MyCustomTransformer implements Adapter
 {
     public function transform($response, $transformer, Binding $binding, Request $request)
     {
-        // Make a call to your transformation layer to transformer the given response.
+        // Make a call to your transformation layer to transform the given response.
     }
 }
 ```
