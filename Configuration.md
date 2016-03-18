@@ -128,7 +128,13 @@ $app['Dingo\Api\Http\RateLimit\Handler']->extend(function ($app) {
 
 Fractal is the default response transformer.
 
-You can configure this in your `.env`. file, however, for more complex configuration you will need a service provider or bootstrap file.
+You can configure this in your `.env`. file.
+
+```
+API_TRANSFORMER=Dingo\Api\Transformer\Adapter\Fractal
+```
+
+However, for more complex configuration you will need a service provider or bootstrap file.
 
 ```php
 $app['Dingo\Api\Transformer\Factory']->setAdapter(function ($app) {
