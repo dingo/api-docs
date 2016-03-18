@@ -24,11 +24,15 @@ app('Dingo\Api\Auth\Auth')->extend('basic', function ($app) {
 
 This package makes use of a 3rd party package to integrate JWT authentication. Please refer to the [`tymon/jwt-auth`](https://github.com/tymondesigns/jwt-auth) GitHub page for details on installing and configuring the package.
 
-Once you have the package you can configure the provider in your `config/api.php` file or in a service provider or bootstrap file.
+Once you have the package you can configure the provider in your `config/api.php` file.
 
 ```php
-'jwt' => 'Dingo\Api\Auth\Provider\JWT'
+'auth' => [
+    'jwt' => Dingo\Api\Auth\Provider\JWT::class,
+],
 ```
+
+Or in a service provider or bootstrap file.
 
 ```php
 app('Dingo\Api\Auth\Auth')->extend('jwt', function ($app) {
@@ -154,7 +158,9 @@ class CustomProvider extends Authorization
 Once you've implemented your authentication provider you can configure it in your `config/api.php` file.
 
 ```php
-'custom' => 'CustomProvider'
+'auth' => [
+    'custom' => 'CustomProvider',
+],
 ```
 
 Or from your bootstrap file or service provider.
