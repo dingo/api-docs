@@ -92,7 +92,7 @@ API_CONDITIONAL_REQUEST=false
 
 Strict mode will require clients to send the `Accept` header instead of defaulting to the version specified in the configuration file. This means you will not be able to browse the API through your web browser.
 
-If strict mode is enabled and an invalid `Accept` header is used the API will throw an unhandled `Symfony\Component\HttpKernel\Exception\BadRequestHttpException` that should be you should handle appropriately.
+If strict mode is enabled and an invalid `Accept` header is used the API will throw an unhandled `Symfony\Component\HttpKernel\Exception\BadRequestHttpException` that you should handle appropriately.
 
 You can configure this in your `.env` file.
 
