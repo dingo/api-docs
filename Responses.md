@@ -46,7 +46,7 @@ Now your controllers can simply extend this base controller. The response builde
 
 > Some of the documentation below makes use of [Transformers](https://github.com/dingo/api/wiki/Transformers), be sure to read that chapter for more details.
 
-#### Responding With An Array
+#### Responding With An Array (deprecated)
 
 ```php
 class UserController extends BaseController
