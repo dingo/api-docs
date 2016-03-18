@@ -16,7 +16,7 @@ This provider uses the default basic authentication built into Laravel and Lumen
 
 ```php
 app('Dingo\Api\Auth\Auth')->extend('basic', function ($app) {
-   return new Dingo\Api\Auth\Provider\Basic($app['auth'], 'email');
+    return new Dingo\Api\Auth\Provider\Basic($app['auth'], 'email');
 });
 ```
 
@@ -36,7 +36,7 @@ Or in a service provider or bootstrap file.
 
 ```php
 app('Dingo\Api\Auth\Auth')->extend('jwt', function ($app) {
-   return new Dingo\Api\Auth\Provider\JWT($app['Tymon\JWTAuth\JWTAuth']);
+    return new Dingo\Api\Auth\Provider\JWT($app['Tymon\JWTAuth\JWTAuth']);
 });
 ```
 
@@ -50,7 +50,7 @@ Once you have the package you will need to configure it in a service provider or
 
 ```php
 app('Dingo\Api\Auth\Auth')->extend('oauth', function ($app) {
-   $provider = new Dingo\Api\Auth\Provider\OAuth2($app['oauth2-server.authorizer']->getChecker());
+    $provider = new Dingo\Api\Auth\Provider\OAuth2($app['oauth2-server.authorizer']->getChecker());
 
     $provider->setUserResolver(function ($id) {
         // Logic to return a user by their ID.

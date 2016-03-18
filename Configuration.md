@@ -108,7 +108,7 @@ For more complex configuration you will need a service provider or bootstrap fil
 
 ```php
 $app['Dingo\Api\Auth\Auth']->extend('oauth', function ($app) {
-   return new Dingo\Api\Auth\Provider\JWT($app['Tymon\JWTAuth\JWTAuth']);
+    return new Dingo\Api\Auth\Provider\JWT($app['Tymon\JWTAuth\JWTAuth']);
 });
 ```
 

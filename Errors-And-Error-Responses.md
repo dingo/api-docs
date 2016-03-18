@@ -18,7 +18,7 @@ Here is a list of built-in Symfony exceptions.
 | `Symfony\Component\HttpKernel\Exception\ServiceUnavailableHttpException`   |         503 |
 | `Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException`      |         429 |
 | `Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException`         |         401 |
-| `Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException` |         415 | 
+| `Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException` |         415 |
 
 As an example you might throw a `ConflictHttpException` when you attempt to update a record that has been updated by another user prior to this update request.
 
