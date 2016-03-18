@@ -73,13 +73,13 @@ You can also register resources and controllers using the respective methods.
 Naming your routes lets you easily generate URLs to them. You can name your routes in the exact same way as you do in Laravel.
 
 ```php
-$api->get('users/{id}', ['as' => 'users.index', 'uses' => 'Api\V1\UserController@show']);
+$api->get('users/{id}', ['as' => 'users.show', 'uses' => 'Api\V1\UserController@show']);
 ```
 
 Now you can generate a URL to the named route.
 
 ```php
-app('Dingo\Api\Routing\UrlGenerator')->version('v1')->route('users.index');
+app('Dingo\Api\Routing\UrlGenerator')->version('v1')->route('users.show');
 ```
 
 You must supply a version so that the URL can be properly generated based on the route within that version. This let's you use the
