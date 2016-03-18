@@ -12,3 +12,4 @@
 12. [API Blueprint Documentation](https://github.com/dingo/api/wiki/API-Blueprint-Documentation)
 13. [Commands](https://github.com/dingo/api/wiki/Commands)
 14. [Package Incompatibilities](https://github.com/dingo/api/wiki/Package-Incompatibilities)
+15. [Extending The Core](https://github.com/dingo/api/wiki/Extending-The-Core)

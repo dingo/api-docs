@@ -2,9 +2,9 @@ The commands that are available will vary depending on which framework you're us
 
 |            | Laravel | Lumen |
 |------------|:-------:|:-----:|
-| api:routes | ✔      |       |
-| api:cache  | ✔      |       |
-| api:docs   | ✔      |   ✔  |
+| api:routes | ✔       |       |
+| api:cache  | ✔       |       |
+| api:docs   | ✔       |✔      |
 
 #### `api:routes`
 
@@ -32,7 +32,7 @@ $ php artisan api:routes --scopes read_user_data --scopes write_user_data
 
 This command will cache your API routes alongside the main application routes. When run this command will also run the `route:cache` command automatically, so do not run that command after running this command.
 
-Your routes should either appear in the main `app/Http/routes.php` file or be included within that file for caching to take affect.
+Your routes should either appear in the main `app/Http/routes.php` file or be included within that file for caching to take effect.
 
 ##### Examples
 

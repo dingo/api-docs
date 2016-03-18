@@ -46,7 +46,7 @@ Now your controllers can simply extend this base controller. The response builde
 
 > Some of the documentation below makes use of [Transformers](https://github.com/dingo/api/wiki/Transformers), be sure to read that chapter for more details.
 
-#### Responding With An Array
+#### Responding With An Array (deprecated)
 
 ```php
 class UserController extends BaseController
@@ -174,7 +174,7 @@ return $this->response->item($user, new UserTransformer)->setStatusCode(200);
 
 ### Custom Response Formats
 
-In the **configuration** chapter we briefly touched on response formats. By default the package will automatically use the JSON format and set an appropriate `Content-Type` header. Aside from a JSON formatter there is also a JSONP formatter. This formatter will wrap the responses in a callback. To register this format you can simply swap out the default JSON formatter in the configuration file or in your bootstrap file.
+In the **configuration** chapter we briefly touched on response formats. By default the package will automatically use the JSON format and set an appropriate `Content-Type` header. Aside from a JSON formatter there is also a JSONP formatter. This formatter will wrap the responses in a callback. To register this format you can simply swap out the default JSON formatter in the configuration file.
 
 ```php
 'formats' => [
@@ -182,13 +182,15 @@ In the **configuration** chapter we briefly touched on response formats. By defa
 ]
 ```
 
+ Or in your bootstrap file.
+
 ```php
 Dingo\Api\Http\Response::addFormatter('json', new Dingo\Api\Http\Response\Format\Jsonp);
 ```
 
 By default the callback parameter expected in the query string is `callback`, this can be changed by passing in the first parameter to the class constructor. If the query string does not contain a parameter with the name of your callback parameter it will default to a JSON response.
 
-You can also register and use your own formatters should you need to. Your formatter should extend `Dingo\Api\Http\Response\Format\Format`. There following methods should be defined: `formatEloquentModel`, `formatEloquentCollection`, `formatArray`, and `getContentType`. Refer to the abstract class for more details on what each method should do or take a look at the pre-defined format classes.
+You can also register and use your own formatters should you need to. Your formatter should extend `Dingo\Api\Http\Response\Format\Format`. The following methods should be defined: `formatEloquentModel`, `formatEloquentCollection`, `formatArray`, and `getContentType`. Refer to the abstract class for more details on what each method should do or take a look at the pre-defined format classes.
 
 ### Morphing And Morphed Events
 

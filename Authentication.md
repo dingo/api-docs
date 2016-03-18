@@ -16,7 +16,7 @@ This provider uses the default basic authentication built into Laravel and Lumen
 
 ```php
 app('Dingo\Api\Auth\Auth')->extend('basic', function ($app) {
-   return new Dingo\Api\Auth\Provider\Basic($app['auth'], 'email');
+    return new Dingo\Api\Auth\Provider\Basic($app['auth'], 'email');
 });
 ```
 
@@ -24,15 +24,19 @@ app('Dingo\Api\Auth\Auth')->extend('basic', function ($app) {
 
 This package makes use of a 3rd party package to integrate JWT authentication. Please refer to the [`tymon/jwt-auth`](https://github.com/tymondesigns/jwt-auth) GitHub page for details on installing and configuring the package.
 
-Once you have the package you can configure the provider in your `config/api.php` file or in a service provider or bootstrap file.
+Once you have the package you can configure the provider in your `config/api.php` file.
 
 ```php
-'jwt' => 'Dingo\Api\Auth\Provider\JWT'
+'auth' => [
+    'jwt' => Dingo\Api\Auth\Provider\JWT::class,
+],
 ```
+
+Or in a service provider or bootstrap file.
 
 ```php
 app('Dingo\Api\Auth\Auth')->extend('jwt', function ($app) {
-   return new Dingo\Api\Auth\Provider\JWT($app['Tymon\JWTAuth\JWTAuth']);
+    return new Dingo\Api\Auth\Provider\JWT($app['Tymon\JWTAuth\JWTAuth']);
 });
 ```
 
@@ -46,7 +50,7 @@ Once you have the package you will need to configure it in a service provider or
 
 ```php
 app('Dingo\Api\Auth\Auth')->extend('oauth', function ($app) {
-   $provider = new Dingo\Api\Auth\Provider\OAuth2($app['oauth2-server.authorizer']->getChecker());
+    $provider = new Dingo\Api\Auth\Provider\OAuth2($app['oauth2-server.authorizer']->getChecker());
 
     $provider->setUserResolver(function ($id) {
         // Logic to return a user by their ID.
@@ -105,7 +109,7 @@ The resolvers both receive the ID of the user or client and should use this ID t
 
 If you're developing for a legacy system or require some other form of authentication you may implement your own provider.
 
-Your authentication provider should implement `Dingo\Api\Contract\Auth\Provider`. If authentication succeeds your provider should return an instance of the authenticated user. If authentication fails your provider should thrown a `Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException`.
+Your authentication provider should implement `Dingo\Api\Contract\Auth\Provider`. If authentication succeeds your provider should return an instance of the authenticated user. If authentication fails your provider should throw a `Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException`.
 
 ```php
 use Illuminate\Http\Request;
@@ -141,7 +145,7 @@ class CustomProvider extends Authorization
         $this->validateAuthorizationHeader($request);
 
         // If the authorization header passed validation we can continue to authenticate.
-        // If authentication then fails we must throw the UnauthorizedHttpException.
+        // If authentication fails we must throw the UnauthorizedHttpException.
     }
 
     public function getAuthorizationMethod()
@@ -154,7 +158,9 @@ class CustomProvider extends Authorization
 Once you've implemented your authentication provider you can configure it in your `config/api.php` file.
 
 ```php
-'custom' => 'CustomProvider'
+'auth' => [
+    'custom' => 'CustomProvider',
+],
 ```
 
 Or from your bootstrap file or service provider.

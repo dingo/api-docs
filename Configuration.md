@@ -92,7 +92,7 @@ API_CONDITIONAL_REQUEST=false
 
 Strict mode will require clients to send the `Accept` header instead of defaulting to the version specified in the configuration file. This means you will not be able to browse the API through your web browser.
 
-If strict mode is enabled and an invalid `Accept` header is used the API will throw an unhandled `Symfony\Component\HttpKernel\Exception\BadRequestHttpException` that should be you should handle appropriately.
+If strict mode is enabled and an invalid `Accept` header is used the API will throw an unhandled `Symfony\Component\HttpKernel\Exception\BadRequestHttpException` that you should handle appropriately.
 
 You can configure this in your `.env` file.
 
@@ -108,7 +108,7 @@ For more complex configuration you will need a service provider or bootstrap fil
 
 ```php
 $app['Dingo\Api\Auth\Auth']->extend('oauth', function ($app) {
-   return new Dingo\Api\Auth\Provider\JWT($app['Tymon\JWTAuth\JWTAuth']);
+    return new Dingo\Api\Auth\Provider\JWT($app['Tymon\JWTAuth\JWTAuth']);
 });
 ```
 
@@ -128,7 +128,13 @@ $app['Dingo\Api\Http\RateLimit\Handler']->extend(function ($app) {
 
 Fractal is the default response transformer.
 
-You can configure this in your `.env`. file, however, for more complex configuration you will need a service provider or bootstrap file.
+You can configure this in your `.env`. file.
+
+```
+API_TRANSFORMER=Dingo\Api\Transformer\Adapter\Fractal
+```
+
+However, for more complex configuration you will need a service provider or bootstrap file.
 
 ```php
 $app['Dingo\Api\Transformer\Factory']->setAdapter(function ($app) {
