@@ -174,13 +174,15 @@ return $this->response->item($user, new UserTransformer)->setStatusCode(200);
 
 ### Custom Response Formats
 
-In the **configuration** chapter we briefly touched on response formats. By default the package will automatically use the JSON format and set an appropriate `Content-Type` header. Aside from a JSON formatter there is also a JSONP formatter. This formatter will wrap the responses in a callback. To register this format you can simply swap out the default JSON formatter in the configuration file or in your bootstrap file.
+In the **configuration** chapter we briefly touched on response formats. By default the package will automatically use the JSON format and set an appropriate `Content-Type` header. Aside from a JSON formatter there is also a JSONP formatter. This formatter will wrap the responses in a callback. To register this format you can simply swap out the default JSON formatter in the configuration file.
 
 ```php
 'formats' => [
     'json' => 'Dingo\Api\Http\Response\Format\Jsonp'
 ]
 ```
+
+ Or in your bootstrap file.
 
 ```php
 Dingo\Api\Http\Response::addFormatter('json', new Dingo\Api\Http\Response\Format\Jsonp);
