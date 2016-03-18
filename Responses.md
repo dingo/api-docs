@@ -190,7 +190,7 @@ Dingo\Api\Http\Response::addFormatter('json', new Dingo\Api\Http\Response\Format
 
 By default the callback parameter expected in the query string is `callback`, this can be changed by passing in the first parameter to the class constructor. If the query string does not contain a parameter with the name of your callback parameter it will default to a JSON response.
 
-You can also register and use your own formatters should you need to. Your formatter should extend `Dingo\Api\Http\Response\Format\Format`. There following methods should be defined: `formatEloquentModel`, `formatEloquentCollection`, `formatArray`, and `getContentType`. Refer to the abstract class for more details on what each method should do or take a look at the pre-defined format classes.
+You can also register and use your own formatters should you need to. Your formatter should extend `Dingo\Api\Http\Response\Format\Format`. The following methods should be defined: `formatEloquentModel`, `formatEloquentCollection`, `formatArray`, and `getContentType`. Refer to the abstract class for more details on what each method should do or take a look at the pre-defined format classes.
 
 ### Morphing And Morphed Events
 
