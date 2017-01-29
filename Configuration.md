@@ -107,7 +107,7 @@ By default only `basic` authentication is enabled. Authentication is covered in 
 For more complex configuration you will need a service provider or bootstrap file.
 
 ```php
-$app['Dingo\Api\Auth\Auth']->extend('oauth', function ($app) {
+$app['Dingo\Api\Auth\Auth']->extend('jwt', function ($app) {
    return new Dingo\Api\Auth\Provider\JWT($app['Tymon\JWTAuth\JWTAuth']);
 });
 ```
