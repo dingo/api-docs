@@ -34,7 +34,7 @@ To utilize the response builder your controllers should use the `Dingo\Api\Routi
 
 ```php
 use Dingo\Api\Routing\Helpers;
-use Illuminate\Routing\Controller;
+use App\HTTP\Controllers\Controller;
 
 class BaseController extends Controller
 {
